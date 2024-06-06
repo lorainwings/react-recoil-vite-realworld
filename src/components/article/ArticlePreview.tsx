@@ -1,40 +1,40 @@
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { postFavorites, deleteFavorites } from '../../api/favorites';
+import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { postFavorites, deleteFavorites } from '../../api/favorites'
 
-import { ArticleProps } from '../../types';
-import { convertToDate } from '../../utils';
-import ArticleTag from '../tag/ArticleTag';
+import { ArticleProps } from '../../types'
+import { convertToDate } from '../../utils'
+import ArticleTag from '../tag/ArticleTag'
 
-import { useRecoilValue } from 'recoil';
-import { isLoggedInAtom } from '../../atom';
+import { useRecoilValue } from 'recoil'
+import { isLoggedInAtom } from '../../atom'
 
-const FAVORITED_CLASS = 'btn btn-sm btn-primary';
-const UNFAVORITED_CLASS = 'btn btn-sm btn-outline-primary';
+const FAVORITED_CLASS = 'btn btn-sm btn-primary'
+const UNFAVORITED_CLASS = 'btn btn-sm btn-outline-primary'
 
 const ArticlePreview = ({ article }: { article: ArticleProps }) => {
-  const [favorited, setFavorited] = useState(article.favorited);
-  const [favoritesCount, setFavoritesCount] = useState(article.favoritesCount);
-  const [disabled, setDisabled] = useState(false);
+  const [favorited, setFavorited] = useState(article.favorited)
+  const [favoritesCount, setFavoritesCount] = useState(article.favoritesCount)
+  const [disabled, setDisabled] = useState(false)
 
-  const isLoggedIn = useRecoilValue(isLoggedInAtom);
-  const navigate = useNavigate();
+  const isLoggedIn = useRecoilValue(isLoggedInAtom)
+  const navigate = useNavigate()
 
   const favorite = async () => {
     try {
-      await postFavorites(article.slug);
-      setFavorited(true);
-      setFavoritesCount(favoritesCount + 1);
+      await postFavorites(article.slug)
+      setFavorited(true)
+      setFavoritesCount(favoritesCount + 1)
     } catch {}
-  };
+  }
 
   const unfavorite = async () => {
     try {
-      await deleteFavorites(article.slug);
-      setFavorited(false);
-      setFavoritesCount(favoritesCount - 1);
+      await deleteFavorites(article.slug)
+      setFavorited(false)
+      setFavoritesCount(favoritesCount - 1)
     } catch {}
-  };
+  }
 
   return (
     <div className="article-preview">
@@ -57,10 +57,10 @@ const ArticlePreview = ({ article }: { article: ArticleProps }) => {
                 : `${UNFAVORITED_CLASS} ${disabled ? 'disabled' : ''}`
             }
             onClick={async () => {
-              if (!isLoggedIn) navigate('/login');
-              setDisabled(true);
-              favorited ? await unfavorite() : await favorite();
-              setDisabled(false);
+              if (!isLoggedIn) navigate('/login')
+              setDisabled(true)
+              favorited ? await unfavorite() : await favorite()
+              setDisabled(false)
             }}
           >
             <i className="ion-heart" /> {favoritesCount}
@@ -78,7 +78,7 @@ const ArticlePreview = ({ article }: { article: ArticleProps }) => {
         </ul>
       </Link>
     </div>
-  );
-};
+  )
+}
 
-export default ArticlePreview;
+export default ArticlePreview

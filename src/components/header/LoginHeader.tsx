@@ -1,5 +1,5 @@
-import { NavLink } from 'react-router-dom';
-import UserImage from './UserImage';
+import { NavLink } from 'react-router-dom'
+import UserImage from './UserImage'
 
 const LoginHeader = () => {
   return (
@@ -24,7 +24,7 @@ const LoginHeader = () => {
         <UserImage />
       </>
     </>
-  );
-};
+  )
+}
 
-export default LoginHeader;
+export default LoginHeader

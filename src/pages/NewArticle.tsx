@@ -1,18 +1,18 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Helmet, HelmetProvider } from 'react-helmet-async';
-import { useSetRecoilState, useRecoilValue } from 'recoil';
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { Helmet, HelmetProvider } from 'react-helmet-async'
+import { useRecoilValue } from 'recoil'
 
-import EditorTag from '../components/tag/EditorTag';
-import { postArticle } from '../api/article';
-import { isLoggedInAtom } from '../atom';
+import EditorTag from '../components/tag/EditorTag'
+import { postArticle } from '../api/article'
+import { isLoggedInAtom } from '../atom'
 
 interface EditorProps {
-  title: string;
-  description: string;
-  body: string;
-  tag: string;
-  tagList: string[];
+  title: string
+  description: string
+  body: string
+  tag: string
+  tagList: string[]
 }
 
 const NewArticle = () => {
@@ -21,82 +21,82 @@ const NewArticle = () => {
     description: '',
     body: '',
     tag: '',
-    tagList: [],
-  });
-  const { title, description, body, tag, tagList } = editor;
+    tagList: []
+  })
+  const { title, description, body, tag, tagList } = editor
   const [error, setError] = useState({
     title: '',
     description: '',
-    body: '',
-  });
-  const [disabled, setDisabled] = useState(false);
-  const navigate = useNavigate();
-  const isLoggedIn = useRecoilValue(isLoggedInAtom);
+    body: ''
+  })
+  const [disabled, setDisabled] = useState(false)
+  const navigate = useNavigate()
+  const isLoggedIn = useRecoilValue(isLoggedInAtom)
 
   const onChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    const { name, value } = event.target;
+    const { name, value } = event.target
     setEditor({
       ...editor,
-      [name]: value,
-    });
-  };
+      [name]: value
+    })
+  }
 
   const onEnter = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
-      event.preventDefault();
+      event.preventDefault()
       if (!tagList.includes(tag)) {
-        addTag(tag);
+        addTag(tag)
       }
     }
-  };
+  }
 
   const addTag = (newTag: string) => {
     setEditor({
       ...editor,
       tag: '',
-      tagList: [...tagList, newTag],
-    });
-  };
+      tagList: [...tagList, newTag]
+    })
+  }
 
   const removeTag = (target: string) => {
-    setEditor({ ...editor, tagList: tagList.filter(tag => tag !== target) });
-  };
+    setEditor({ ...editor, tagList: tagList.filter(tag => tag !== target) })
+  }
 
   const publishArticle = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setDisabled(true);
+    e.preventDefault()
+    setDisabled(true)
     try {
       const { article } = await postArticle({
         article: {
           title: title,
           description: description,
           body: body,
-          tagList: tagList,
-        },
-      });
-      navigate(`/article/${article.slug}`);
+          tagList: tagList
+        }
+      })
+      navigate(`/article/${article.slug}`)
     } catch (e: any) {
       if (e.response.status === 422) {
-        const errorMessage = e.response.data.errors;
+        const errorMessage = e.response.data.errors
         setError({
           title: errorMessage.title,
           description: errorMessage.description,
-          body: errorMessage.body,
-        });
+          body: errorMessage.body
+        })
       } else {
         setError({
           title: '',
           description: '',
-          body: '',
-        });
+          body: ''
+        })
       }
     }
-    setDisabled(false);
-  };
+    setDisabled(false)
+  }
 
-  if (!isLoggedIn) navigate('/', { replace: true });
+  if (!isLoggedIn) navigate('/', { replace: true })
 
   return (
     <>
@@ -112,8 +112,8 @@ const NewArticle = () => {
             <div className="col-md-10 offset-md-1 col-xs-12">
               <ul className="error-messages">
                 {error.title && <li>title {error.title}</li>}
-                {error.description && <li>description can't be blank</li>}
-                {error.body && <li>body can't be blank</li>}
+                {error.description && <li>description can&apos;t be blank</li>}
+                {error.body && <li>body can&apos;t be blank</li>}
               </ul>
 
               <form onSubmit={event => publishArticle(event)}>
@@ -185,7 +185,7 @@ const NewArticle = () => {
         </div>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default NewArticle;
+export default NewArticle

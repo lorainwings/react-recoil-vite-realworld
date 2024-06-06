@@ -3,57 +3,57 @@
  * This component is only used for unit test.
  */
 
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 
-import { loginUser } from '../api/user';
+import { loginUser } from '../api/user'
 
 const LoginForm = () => {
   const [account, setAccount] = useState({
     email: '',
-    password: '',
-  });
-  const { email, password } = account;
-  const [disabled, setDisabled] = useState(false);
+    password: ''
+  })
+  const { email, password } = account
+  const [disabled, setDisabled] = useState(false)
   const [error, setError] = useState({
     email: '',
     password: '',
-    emailOrPassword: '',
-  });
+    emailOrPassword: ''
+  })
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target
     setAccount({
       ...account,
-      [name]: value,
-    });
-  };
+      [name]: value
+    })
+  }
 
   const onLogin = async (e: React.FormEvent<HTMLFormElement>) => {
-    setDisabled(true);
-    e.preventDefault();
+    setDisabled(true)
+    e.preventDefault()
     try {
-      const { user } = await loginUser({
+      await loginUser({
         user: {
           email: email,
-          password: password,
-        },
-      });
+          password: password
+        }
+      })
     } catch (e: any) {
-      const errorMessage = e.response.data.errors;
+      const errorMessage = e.response.data.errors
       setError({
         email: errorMessage.email,
         password: errorMessage.password,
-        emailOrPassword: errorMessage['email or password'],
-      });
+        emailOrPassword: errorMessage['email or password']
+      })
     }
-    setDisabled(false);
-  };
+    setDisabled(false)
+  }
 
   return (
     <>
       <ul className="error-messages">
-        {error.email && <li>email can't be blank</li>}
-        {error.password && <li>password can'be blank</li>}
+        {error.email && <li>email can&apos;t be blank</li>}
+        {error.password && <li>password can&apos;be blank</li>}
         {error.emailOrPassword && <li>email or password is invalid</li>}
       </ul>
 
@@ -89,7 +89,7 @@ const LoginForm = () => {
         </button>
       </form>
     </>
-  );
-};
+  )
+}
 
-export default LoginForm;
+export default LoginForm

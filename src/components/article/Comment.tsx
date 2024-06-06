@@ -1,18 +1,18 @@
-import { Link } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
+import { Link } from 'react-router-dom'
+import { useRecoilValue } from 'recoil'
 
-import { CommentProps } from '../../types';
-import { convertToDate } from '../../utils';
-import { userAtom } from '../../atom';
+import { CommentProps } from '../../types'
+import { convertToDate } from '../../utils'
+import { userAtom } from '../../atom'
 
 const Comment = ({
   comment,
-  removeComment,
+  removeComment
 }: {
-  comment: CommentProps;
-  removeComment: (id: number) => Promise<void>;
+  comment: CommentProps
+  removeComment: (id: number) => Promise<void>
 }) => {
-  const username = useRecoilValue(userAtom).username;
+  const username = useRecoilValue(userAtom).username
 
   return (
     <div className="card">
@@ -43,7 +43,7 @@ const Comment = ({
         ) : null}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Comment;
+export default Comment

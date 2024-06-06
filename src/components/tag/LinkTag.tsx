@@ -1,8 +1,8 @@
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom'
 
 interface LinkTagProps {
-  name: string;
-  onClick: React.MouseEventHandler<HTMLAnchorElement>;
+  name: string
+  onClick: React.MouseEventHandler<HTMLAnchorElement>
 }
 
 const LinkTag = ({ name, onClick }: LinkTagProps) => {
@@ -10,7 +10,7 @@ const LinkTag = ({ name, onClick }: LinkTagProps) => {
     <Link to="/" className="tag-default tag-pill" onClick={onClick}>
       {name}
     </Link>
-  );
-};
+  )
+}
 
-export default LinkTag;
+export default LinkTag

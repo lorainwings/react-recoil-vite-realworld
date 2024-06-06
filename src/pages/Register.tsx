@@ -1,65 +1,65 @@
-import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useSetRecoilState, useRecoilValue } from 'recoil';
-import { Helmet, HelmetProvider } from 'react-helmet-async';
+import { useState, useEffect } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { useSetRecoilState, useRecoilValue } from 'recoil'
+import { Helmet, HelmetProvider } from 'react-helmet-async'
 
-import { registerUser } from '../api/user';
-import { userAtom } from '../atom';
-import { isLoggedInAtom } from '../atom';
+import { registerUser } from '../api/user'
+import { userAtom } from '../atom'
+import { isLoggedInAtom } from '../atom'
 
 const Register = () => {
   const [account, setAccount] = useState({
     username: '',
     email: '',
-    password: '',
-  });
-  const { username, email, password } = account;
+    password: ''
+  })
+  const { username, email, password } = account
   const [error, setError] = useState({
     email: '',
     username: '',
-    password: '',
-  });
-  const [disabled, setDisabled] = useState(false);
-  const setUser = useSetRecoilState(userAtom);
-  const isLoggedIn = useRecoilValue(isLoggedInAtom);
-  const navigate = useNavigate();
+    password: ''
+  })
+  const [disabled, setDisabled] = useState(false)
+  const setUser = useSetRecoilState(userAtom)
+  const isLoggedIn = useRecoilValue(isLoggedInAtom)
+  const navigate = useNavigate()
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
+    const { name, value } = event.target
     setAccount({
       ...account,
-      [name]: value,
-    });
-  };
+      [name]: value
+    })
+  }
 
   const onRegister = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setDisabled(true);
+    event.preventDefault()
+    setDisabled(true)
     try {
       const data = await registerUser({
         user: {
           username: username,
           email: email,
-          password: password,
-        },
-      });
-      localStorage.setItem('jwtToken', data.user.token);
-      setUser(data.user);
-      navigate('/', { replace: true });
+          password: password
+        }
+      })
+      localStorage.setItem('jwtToken', data.user.token)
+      setUser(data.user)
+      navigate('/', { replace: true })
     } catch (error: any) {
-      const errorMessage = error.response.data.errors;
+      const errorMessage = error.response.data.errors
       setError({
         email: errorMessage.email,
         username: errorMessage.username,
-        password: errorMessage.password,
-      });
+        password: errorMessage.password
+      })
     }
-    setDisabled(false);
-  };
+    setDisabled(false)
+  }
 
   useEffect(() => {
-    if (isLoggedIn) navigate('/', { replace: true });
-  }, [isLoggedIn, navigate]);
+    if (isLoggedIn) navigate('/', { replace: true })
+  }, [isLoggedIn, navigate])
 
   return (
     <>
@@ -134,7 +134,7 @@ const Register = () => {
         </div>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default Register;
+export default Register

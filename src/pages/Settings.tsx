@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useRecoilState } from 'recoil';
-import { Helmet, HelmetProvider } from 'react-helmet-async';
+import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useRecoilState } from 'recoil'
+import { Helmet, HelmetProvider } from 'react-helmet-async'
 
-import { putUser } from '../api/user';
-import { isLoggedInAtom, userAtom } from '../atom';
+import { putUser } from '../api/user'
+import { isLoggedInAtom, userAtom } from '../atom'
 
 const Settings = () => {
   const [settings, setSettings] = useState({
@@ -12,28 +12,28 @@ const Settings = () => {
     username: '',
     bio: '',
     email: '',
-    password: '',
-  });
-  const { image, username, bio, email, password } = settings;
-  const [disabled, setDisabled] = useState(false);
+    password: ''
+  })
+  const { image, username, bio, email, password } = settings
+  const [disabled, setDisabled] = useState(false)
 
-  const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoggedInAtom);
-  const [user, setUser] = useRecoilState(userAtom);
-  const navigate = useNavigate();
+  const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoggedInAtom)
+  const [user, setUser] = useRecoilState(userAtom)
+  const navigate = useNavigate()
 
   const onChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    const { name, value } = event.target;
+    const { name, value } = event.target
     setSettings({
       ...settings,
-      [name]: value,
-    });
-  };
+      [name]: value
+    })
+  }
 
   const updateSettings = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setDisabled(true);
+    event.preventDefault()
+    setDisabled(true)
     try {
       const { user } = await putUser({
         user: {
@@ -41,39 +41,39 @@ const Settings = () => {
           username: username,
           bio: bio,
           image: image,
-          password: password,
-        },
-      });
-      localStorage.setItem('jwtToken', user.token);
+          password: password
+        }
+      })
+      localStorage.setItem('jwtToken', user.token)
       setUser({
         email: user.email,
         username: user.username,
         bio: user.bio,
-        image: user.image,
-      });
-      navigate(`/profile/${username}`);
+        image: user.image
+      })
+      navigate(`/profile/${username}`)
     } catch (err: any) {}
-    setDisabled(false);
-  };
+    setDisabled(false)
+  }
 
   const onLogout = () => {
-    localStorage.removeItem('jwtToken');
-    setIsLoggedIn(false);
-    setUser({ email: '', username: '', bio: '', image: '' });
-    navigate('/', { replace: true });
-  };
+    localStorage.removeItem('jwtToken')
+    setIsLoggedIn(false)
+    setUser({ email: '', username: '', bio: '', image: '' })
+    navigate('/', { replace: true })
+  }
 
   useEffect(() => {
     const initSettings = () => {
       setSettings({
         ...user,
-        password: '',
-      });
-    };
-    initSettings();
-  }, [user]);
+        password: ''
+      })
+    }
+    initSettings()
+  }, [user])
 
-  if (!isLoggedIn) navigate('/', { replace: true });
+  if (!isLoggedIn) navigate('/', { replace: true })
 
   return (
     <>
@@ -165,7 +165,7 @@ const Settings = () => {
         </div>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default Settings;
+export default Settings

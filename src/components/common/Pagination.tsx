@@ -1,18 +1,18 @@
-import { Link } from 'react-router-dom';
-import { useRecoilState } from 'recoil';
-import { pageAtom } from '../../atom';
+import { Link } from 'react-router-dom'
+import { useRecoilState } from 'recoil'
+import { pageAtom } from '../../atom'
 
 interface PaginationProps {
-  articlesCount: number;
-  url: string;
+  articlesCount: number
+  url: string
 }
 
 const Pagination = ({ articlesCount, url }: PaginationProps) => {
-  const [page, setPage] = useRecoilState(pageAtom);
-  const pageLength = Math.ceil(articlesCount / 10);
-  const pageNums = [...Array(pageLength).keys()].map(p => p + 1);
+  const [page, setPage] = useRecoilState(pageAtom)
+  const pageLength = Math.ceil(articlesCount / 10)
+  const pageNums = [...Array(pageLength).keys()].map(p => p + 1)
 
-  if (pageLength === 1) return null;
+  if (pageLength === 1) return null
 
   return (
     <>
@@ -31,7 +31,7 @@ const Pagination = ({ articlesCount, url }: PaginationProps) => {
         </ul>
       </nav>
     </>
-  );
-};
+  )
+}
 
-export default Pagination;
+export default Pagination

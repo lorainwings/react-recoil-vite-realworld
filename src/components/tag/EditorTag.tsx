@@ -1,6 +1,6 @@
 interface EditorTagProps {
-  name: string;
-  onClick: React.MouseEventHandler<HTMLButtonElement>;
+  name: string
+  onClick: React.MouseEventHandler<HTMLButtonElement>
 }
 
 const EditorTag = ({ name, onClick }: EditorTagProps) => {
@@ -13,7 +13,7 @@ const EditorTag = ({ name, onClick }: EditorTagProps) => {
       ></i>
       {` ${name} `}
     </span>
-  );
-};
+  )
+}
 
-export default EditorTag;
+export default EditorTag

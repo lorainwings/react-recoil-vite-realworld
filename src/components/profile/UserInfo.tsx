@@ -1,12 +1,12 @@
-import { useState, useEffect } from 'react';
-import { Link, useParams, useNavigate } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
+import { useState, useEffect } from 'react'
+import { Link, useParams, useNavigate } from 'react-router-dom'
+import { useRecoilValue } from 'recoil'
 
-import Loading from '../common/Loading';
-import { getProfile } from '../../api/profile';
-import { userAtom } from '../../atom';
-import FollowButton from '../common/FollowButton';
-import { postFollow, deleteFollow } from '../../api/profile';
+import Loading from '../common/Loading'
+import { getProfile } from '../../api/profile'
+import { userAtom } from '../../atom'
+import FollowButton from '../common/FollowButton'
+import { postFollow, deleteFollow } from '../../api/profile'
 
 // TODO: userInfo refresh issue when 'My/Favorited Articles' button clicked
 const UserInfo = () => {
@@ -14,54 +14,54 @@ const UserInfo = () => {
     image: '',
     username: '',
     bio: '',
-    following: false,
-  });
-  const { image, username, bio, following } = userInfo;
-  const [loading, setLoading] = useState(true);
-  const user = useRecoilValue(userAtom);
-  const { userId } = useParams();
-  const navigate = useNavigate();
+    following: false
+  })
+  const { image, username, bio, following } = userInfo
+  const [loading, setLoading] = useState(true)
+  const user = useRecoilValue(userAtom)
+  const { userId } = useParams()
+  const navigate = useNavigate()
 
   useEffect(() => {
     const initUserInfo = async () => {
-      setLoading(true);
+      setLoading(true)
       try {
-        const data = await getProfile(userId!);
-        const { image, username, bio, following } = data.profile;
+        const data = await getProfile(userId!)
+        const { image, username, bio, following } = data.profile
         setUserInfo({
           image: image,
           username: username,
           bio: bio,
-          following: following,
-        });
+          following: following
+        })
       } catch {
-        navigate('/', { replace: true });
+        navigate('/', { replace: true })
       }
-      setLoading(false);
-    };
+      setLoading(false)
+    }
 
-    initUserInfo();
-  }, [userId, navigate]);
+    initUserInfo()
+  }, [userId, navigate])
 
   const follow = async () => {
     try {
-      await postFollow(userId!);
+      await postFollow(userId!)
       setUserInfo({
         ...userInfo,
-        following: true,
-      });
+        following: true
+      })
     } catch {}
-  };
+  }
 
   const unfollow = async () => {
     try {
-      await deleteFollow(userId!);
+      await deleteFollow(userId!)
       setUserInfo({
         ...userInfo,
-        following: false,
-      });
+        following: false
+      })
     } catch {}
-  };
+  }
 
   return (
     <>
@@ -95,7 +95,7 @@ const UserInfo = () => {
         )}
       </div>
     </>
-  );
-};
+  )
+}
 
-export default UserInfo;
+export default UserInfo

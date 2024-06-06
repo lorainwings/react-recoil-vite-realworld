@@ -1,19 +1,19 @@
-import { useState, useEffect } from 'react';
-import { useNavigate, useParams, Navigate } from 'react-router-dom';
-import { Helmet, HelmetProvider } from 'react-helmet-async';
-import { useSetRecoilState, useRecoilValue } from 'recoil';
+import { useState, useEffect } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
+import { Helmet, HelmetProvider } from 'react-helmet-async'
+import { useRecoilValue } from 'recoil'
 
-import EditorTag from '../components/tag/EditorTag';
-import Loading from '../components/common/Loading';
-import { putArticle, getArticle } from '../api/article';
-import { isLoggedInAtom, userAtom } from '../atom';
+import EditorTag from '../components/tag/EditorTag'
+import Loading from '../components/common/Loading'
+import { putArticle, getArticle } from '../api/article'
+import { isLoggedInAtom, userAtom } from '../atom'
 
 interface EditorProps {
-  title: string;
-  description: string;
-  body: string;
-  tag: string;
-  tagList: string[];
+  title: string
+  description: string
+  body: string
+  tag: string
+  tagList: string[]
 }
 
 const EditArticle = () => {
@@ -22,103 +22,103 @@ const EditArticle = () => {
     description: '',
     body: '',
     tag: '',
-    tagList: [],
-  });
-  const { title, description, body, tag, tagList } = editor;
+    tagList: []
+  })
+  const { title, description, body, tag, tagList } = editor
   const [error, setError] = useState({
     title: '',
     description: '',
-    body: '',
-  });
-  const [disabled, setDisabled] = useState(false);
-  const [loading, setLoading] = useState(true);
+    body: ''
+  })
+  const [disabled, setDisabled] = useState(false)
+  const [loading, setLoading] = useState(true)
 
-  const navigate = useNavigate();
-  const { URLSlug } = useParams();
-  const isLoggedIn = useRecoilValue(isLoggedInAtom);
-  const user = useRecoilValue(userAtom);
+  const navigate = useNavigate()
+  const { URLSlug } = useParams()
+  const isLoggedIn = useRecoilValue(isLoggedInAtom)
+  const user = useRecoilValue(userAtom)
 
   const onChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    const { name, value } = event.target;
+    const { name, value } = event.target
     setEditor({
       ...editor,
-      [name]: value,
-    });
-  };
+      [name]: value
+    })
+  }
 
   const onEnter = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
-      event.preventDefault();
+      event.preventDefault()
       if (!tagList.includes(tag)) {
-        addTag(tag);
+        addTag(tag)
       }
     }
-  };
+  }
 
   const addTag = (newTag: string) => {
     setEditor({
       ...editor,
       tag: '',
-      tagList: [...tagList, newTag],
-    });
-  };
+      tagList: [...tagList, newTag]
+    })
+  }
 
   const removeTag = (target: string) => {
-    setEditor({ ...editor, tagList: tagList.filter(tag => tag !== target) });
-  };
+    setEditor({ ...editor, tagList: tagList.filter(tag => tag !== target) })
+  }
 
   const publishArticle = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setDisabled(true);
+    event.preventDefault()
+    setDisabled(true)
     try {
       const data = await putArticle(URLSlug!, {
         article: {
           title: title,
           description: description,
           body: body,
-          tagList: tagList,
-        },
-      });
-      navigate(`/article/${data.article.slug}`);
+          tagList: tagList
+        }
+      })
+      navigate(`/article/${data.article.slug}`)
     } catch (err: any) {
       if (err.response.status === 422) {
-        const errorMessage = err.response.data.errors;
+        const errorMessage = err.response.data.errors
         setError({
           title: errorMessage.title,
           description: errorMessage.description,
-          body: errorMessage.body,
-        });
+          body: errorMessage.body
+        })
       }
     }
-    setDisabled(false);
-  };
+    setDisabled(false)
+  }
 
   useEffect(() => {
     const initArticle = async () => {
       try {
-        const { article } = await getArticle(URLSlug!);
+        const { article } = await getArticle(URLSlug!)
         if (!isLoggedIn || article.author.username !== user.username) {
-          navigate('/', { replace: true });
+          navigate('/', { replace: true })
         }
         setEditor({
           title: article.title,
           description: article.description,
           body: article.body,
           tag: '',
-          tagList: article.tagList,
-        });
+          tagList: article.tagList
+        })
       } catch (e: any) {
-        navigate('/', { replace: true });
+        navigate('/', { replace: true })
       }
-      setLoading(false);
-    };
+      setLoading(false)
+    }
 
-    initArticle();
-  }, [URLSlug, isLoggedIn, navigate, user.username]);
+    initArticle()
+  }, [URLSlug, isLoggedIn, navigate, user.username])
 
-  if (loading) return <Loading height={75} />;
+  if (loading) return <Loading height={75} />
 
   return (
     <>
@@ -133,8 +133,8 @@ const EditArticle = () => {
             <div className="col-md-10 offset-md-1 col-xs-12">
               <ul className="error-messages">
                 {error.title && <li>title {error.title}</li>}
-                {error.description && <li>description can't be blank</li>}
-                {error.body && <li>body can't be blank</li>}
+                {error.description && <li>description can&apos;t be blank</li>}
+                {error.body && <li>body can&apos;t be blank</li>}
               </ul>
               <form onSubmit={event => publishArticle(event)}>
                 <fieldset>
@@ -203,7 +203,7 @@ const EditArticle = () => {
         </div>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default EditArticle;
+export default EditArticle

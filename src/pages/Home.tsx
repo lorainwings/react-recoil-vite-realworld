@@ -1,48 +1,48 @@
-import { useState, useEffect, useMemo } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Helmet, HelmetProvider } from 'react-helmet-async';
-import { useRecoilValue } from 'recoil';
+import { useState, useEffect, useMemo } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { Helmet, HelmetProvider } from 'react-helmet-async'
+import { useRecoilValue } from 'recoil'
 
-import Feed from '../components/feed/Feed';
-import LinkTag from '../components/tag/LinkTag';
-import Loading from '../components/common/Loading';
+import Feed from '../components/feed/Feed'
+import LinkTag from '../components/tag/LinkTag'
+import Loading from '../components/common/Loading'
 
-import { isLoggedInAtom } from '../atom';
-import { getTags } from '../api/tags';
+import { isLoggedInAtom } from '../atom'
+import { getTags } from '../api/tags'
 
 const Home = () => {
-  const isLoggedIn = useRecoilValue(isLoggedInAtom);
-  const navigate = useNavigate();
+  const isLoggedIn = useRecoilValue(isLoggedInAtom)
+  const navigate = useNavigate()
 
-  const [toggle, setToggle] = useState(isLoggedIn ? 0 : 1);
-  const [tagList, setTagList] = useState<string[]>([]);
-  const [tagListLoading, setTagListLoading] = useState(false);
-  const [tagName, setTagName] = useState('');
+  const [toggle, setToggle] = useState(isLoggedIn ? 0 : 1)
+  const [tagList, setTagList] = useState<string[]>([])
+  const [tagListLoading, setTagListLoading] = useState(false)
+  const [tagName, setTagName] = useState('')
 
   const queryList = useMemo(
     () => ['/feed?', '?', `?tag=${tagName}&`],
     [tagName]
-  );
+  )
 
   const onClickTag = (tag: string) => {
-    setToggle(2);
-    setTagName(tag);
-  };
+    setToggle(2)
+    setTagName(tag)
+  }
 
   useEffect(() => {
     const initTags = async () => {
-      setTagListLoading(true);
+      setTagListLoading(true)
       try {
-        const { tags } = await getTags();
-        setTagList(tags);
+        const { tags } = await getTags()
+        setTagList(tags)
       } catch {}
-      setTagListLoading(false);
-    };
+      setTagListLoading(false)
+    }
 
-    initTags();
-  }, []);
+    initTags()
+  }, [])
 
-  useEffect(() => navigate('/', { replace: true }), [navigate]);
+  useEffect(() => navigate('/', { replace: true }), [navigate])
 
   return (
     <>
@@ -70,7 +70,7 @@ const Home = () => {
                       className={`nav-link ${toggle === 0 ? 'active' : ''}`}
                       to="/"
                       onClick={() => {
-                        setToggle(0);
+                        setToggle(0)
                       }}
                       hidden={!isLoggedIn}
                     >
@@ -82,7 +82,7 @@ const Home = () => {
                       className={`nav-link ${toggle === 1 ? 'active' : ''}`}
                       to="/"
                       onClick={() => {
-                        setToggle(1);
+                        setToggle(1)
                       }}
                     >
                       Global Feed
@@ -93,7 +93,7 @@ const Home = () => {
                       className="nav-link active"
                       to="/"
                       onClick={() => {
-                        setToggle(2);
+                        setToggle(2)
                       }}
                       hidden={toggle !== 2}
                     >
@@ -127,7 +127,7 @@ const Home = () => {
         </div>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default Home;
+export default Home

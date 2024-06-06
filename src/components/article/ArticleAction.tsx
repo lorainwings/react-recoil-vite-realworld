@@ -1,22 +1,22 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { ArticleProps } from '../../types';
-import FollowButton from '../common/FollowButton';
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { ArticleProps } from '../../types'
+import FollowButton from '../common/FollowButton'
 
-import { useRecoilValue } from 'recoil';
-import { isLoggedInAtom } from '../../atom';
+import { useRecoilValue } from 'recoil'
+import { isLoggedInAtom } from '../../atom'
 
-const FAVORITED_CLASS = 'btn btn-sm btn-primary';
-const UNFAVORITED_CLASS = 'btn btn-sm btn-outline-primary';
+const FAVORITED_CLASS = 'btn btn-sm btn-primary'
+const UNFAVORITED_CLASS = 'btn btn-sm btn-outline-primary'
 
 interface ArticleActionProps {
-  isUser: boolean;
-  removeArticle: () => Promise<void>;
-  follow: () => Promise<void>;
-  unfollow: () => Promise<void>;
-  favorite: () => Promise<void>;
-  unfavorite: () => Promise<void>;
-  article: ArticleProps;
+  isUser: boolean
+  removeArticle: () => Promise<void>
+  follow: () => Promise<void>
+  unfollow: () => Promise<void>
+  favorite: () => Promise<void>
+  unfavorite: () => Promise<void>
+  article: ArticleProps
 }
 
 const ArticleAction = ({
@@ -26,11 +26,11 @@ const ArticleAction = ({
   unfollow,
   favorite,
   unfavorite,
-  article,
+  article
 }: ArticleActionProps) => {
-  const [disabled, setDisabled] = useState(false);
-  const isLoggedIn = useRecoilValue(isLoggedInAtom);
-  const navigate = useNavigate();
+  const [disabled, setDisabled] = useState(false)
+  const isLoggedIn = useRecoilValue(isLoggedInAtom)
+  const navigate = useNavigate()
 
   return isUser ? (
     <>
@@ -66,10 +66,10 @@ const ArticleAction = ({
         }
         type="button"
         onClick={async () => {
-          if (!isLoggedIn) navigate('/login');
-          setDisabled(true);
-          article.favorited ? await unfavorite() : await favorite();
-          setDisabled(false);
+          if (!isLoggedIn) navigate('/login')
+          setDisabled(true)
+          article.favorited ? await unfavorite() : await favorite()
+          setDisabled(false)
         }}
       >
         <i className="ion-heart"></i>
@@ -77,7 +77,7 @@ const ArticleAction = ({
         <span className="counter">({article.favoritesCount})</span>
       </button>
     </>
-  );
-};
+  )
+}
 
-export default ArticleAction;
+export default ArticleAction

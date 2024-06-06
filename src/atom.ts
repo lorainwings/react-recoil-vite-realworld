@@ -1,9 +1,9 @@
-import { atom } from 'recoil';
+import { atom } from 'recoil'
 
 export const isLoggedInAtom = atom({
   key: 'isLoggedInAtom',
-  default: false,
-});
+  default: false
+})
 
 export const userAtom = atom({
   key: 'userAtom',
@@ -11,11 +11,11 @@ export const userAtom = atom({
     email: '',
     username: '',
     bio: '',
-    image: '',
-  },
-});
+    image: ''
+  }
+})
 
 export const pageAtom = atom({
   key: 'pageAtom',
-  default: 1,
-});
+  default: 1
+})

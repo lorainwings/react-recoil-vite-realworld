@@ -1,23 +1,23 @@
-import { useEffect, useState } from 'react';
-import { Link, useParams, useNavigate } from 'react-router-dom';
-import { Helmet, HelmetProvider } from 'react-helmet-async';
-import { useRecoilValue } from 'recoil';
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
+import { useEffect, useState } from 'react'
+import { Link, useParams, useNavigate } from 'react-router-dom'
+import { Helmet, HelmetProvider } from 'react-helmet-async'
+import { useRecoilValue } from 'recoil'
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 
-import Comment from '../components/article/Comment';
-import ArticleTag from '../components/tag/ArticleTag';
-import ArticleAction from '../components/article/ArticleAction';
-import Loading from '../components/common/Loading';
+import Comment from '../components/article/Comment'
+import ArticleTag from '../components/tag/ArticleTag'
+import ArticleAction from '../components/article/ArticleAction'
+import Loading from '../components/common/Loading'
 
-import { getArticle, deleteArticle } from '../api/article';
-import { deleteComment, getComments, postComment } from '../api/comment';
-import { postFavorites, deleteFavorites } from '../api/favorites';
-import { postFollow, deleteFollow } from '../api/profile';
+import { getArticle, deleteArticle } from '../api/article'
+import { deleteComment, getComments, postComment } from '../api/comment'
+import { postFavorites, deleteFavorites } from '../api/favorites'
+import { postFollow, deleteFollow } from '../api/profile'
 
-import { isLoggedInAtom, userAtom } from '../atom';
-import { ArticleProps, CommentProps } from '../types';
-import { convertToDate } from '../utils';
+import { isLoggedInAtom, userAtom } from '../atom'
+import { ArticleProps, CommentProps } from '../types'
+import { convertToDate } from '../utils'
 
 const Article = () => {
   const [article, setArticle] = useState<ArticleProps>({
@@ -33,128 +33,128 @@ const Article = () => {
       username: '',
       bio: '',
       image: '',
-      following: false,
-    },
-  });
-  const [comment, setComment] = useState('');
-  const [comments, setComments] = useState<CommentProps[]>([]);
-  const [isUser, setIsUser] = useState(false);
-  const [pageTitle, setPageTitle] = useState('');
-  const [loading, setLoading] = useState(true);
-  const [disabled, setDisabled] = useState(false);
+      following: false
+    }
+  })
+  const [comment, setComment] = useState('')
+  const [comments, setComments] = useState<CommentProps[]>([])
+  const [isUser, setIsUser] = useState(false)
+  const [pageTitle, setPageTitle] = useState('')
+  const [loading, setLoading] = useState(true)
+  const [disabled, setDisabled] = useState(false)
 
-  const isLoggedIn = useRecoilValue(isLoggedInAtom);
-  const user = useRecoilValue(userAtom);
-  const { URLSlug } = useParams();
-  const navigate = useNavigate();
+  const isLoggedIn = useRecoilValue(isLoggedInAtom)
+  const user = useRecoilValue(userAtom)
+  const { URLSlug } = useParams()
+  const navigate = useNavigate()
 
   const onChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const { value } = event.target;
-    setComment(value);
-  };
+    const { value } = event.target
+    setComment(value)
+  }
 
   const removeArticle = async () => {
     try {
-      await deleteArticle(URLSlug!);
-      navigate(-1);
+      await deleteArticle(URLSlug!)
+      navigate(-1)
     } catch {}
-  };
+  }
 
   const publishComment = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setDisabled(true);
+    e.preventDefault()
+    setDisabled(true)
     try {
       const data = await postComment(URLSlug!, {
-        comment: { body: comment },
-      });
-      setComments([data.comment, ...comments]);
-      setComment('');
+        comment: { body: comment }
+      })
+      setComments([data.comment, ...comments])
+      setComment('')
     } catch {}
-    setDisabled(false);
-  };
+    setDisabled(false)
+  }
 
   const removeComment = async (id: number) => {
     try {
-      await deleteComment(URLSlug!, id);
-      setComments(comments.filter(comment => comment.id !== id));
+      await deleteComment(URLSlug!, id)
+      setComments(comments.filter(comment => comment.id !== id))
     } catch {}
-  };
+  }
 
   const follow = async () => {
     try {
-      await postFollow(article.author.username);
+      await postFollow(article.author.username)
       setArticle({
         ...article,
         author: {
           ...article.author,
-          following: true,
-        },
-      });
+          following: true
+        }
+      })
     } catch {}
-  };
+  }
 
   const unfollow = async () => {
     try {
-      await deleteFollow(article.author.username);
+      await deleteFollow(article.author.username)
       setArticle({
         ...article,
         author: {
           ...article.author,
-          following: false,
-        },
-      });
+          following: false
+        }
+      })
     } catch {}
-  };
+  }
 
   const favorite = async () => {
     try {
-      await postFavorites(article.slug);
+      await postFavorites(article.slug)
       setArticle({
         ...article,
         favorited: true,
-        favoritesCount: article.favoritesCount + 1,
-      });
+        favoritesCount: article.favoritesCount + 1
+      })
     } catch {}
-  };
+  }
 
   const unfavorite = async () => {
     try {
-      await deleteFavorites(article.slug);
+      await deleteFavorites(article.slug)
       setArticle({
         ...article,
         favorited: false,
-        favoritesCount: article.favoritesCount - 1,
-      });
+        favoritesCount: article.favoritesCount - 1
+      })
     } catch {}
-  };
+  }
 
   useEffect(() => {
     const initArticle = async () => {
-      setLoading(true);
+      setLoading(true)
       try {
-        const { article } = await getArticle(URLSlug!);
-        setArticle(article);
-        setPageTitle(article.title);
-        setIsUser(article.author.username === user.username);
+        const { article } = await getArticle(URLSlug!)
+        setArticle(article)
+        setPageTitle(article.title)
+        setIsUser(article.author.username === user.username)
       } catch {
-        navigate('/', { replace: true });
+        navigate('/', { replace: true })
       }
-      setLoading(false);
-    };
+      setLoading(false)
+    }
 
-    initArticle();
-  }, [URLSlug, user.username, navigate]);
+    initArticle()
+  }, [URLSlug, user.username, navigate])
 
   useEffect(() => {
     const initComments = async () => {
-      const { comments } = await getComments(URLSlug!);
-      setComments(comments);
-    };
+      const { comments } = await getComments(URLSlug!)
+      setComments(comments)
+    }
 
-    initComments();
-  }, [URLSlug]);
+    initComments()
+  }, [URLSlug])
 
-  if (loading) return <Loading height={75} />;
+  if (loading) return <Loading height={75} />
 
   return (
     <>
@@ -198,10 +198,9 @@ const Article = () => {
         <div className="container page">
           <div className="row article-content">
             <div className="col-md-12">
-              <ReactMarkdown
-                children={article.body!}
-                remarkPlugins={[remarkGfm]}
-              />
+              <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                {article.body!}
+              </ReactMarkdown>
             </div>
           </div>
           <div>
@@ -280,7 +279,7 @@ const Article = () => {
         </div>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default Article;
+export default Article

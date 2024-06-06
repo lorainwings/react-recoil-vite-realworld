@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom'
 
 const LogoutHeader = () => {
   return (
@@ -20,7 +20,7 @@ const LogoutHeader = () => {
         </NavLink>
       </li>
     </>
-  );
-};
+  )
+}
 
-export default LogoutHeader;
+export default LogoutHeader

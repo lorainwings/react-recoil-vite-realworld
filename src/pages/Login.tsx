@@ -1,63 +1,63 @@
-import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useRecoilState, useSetRecoilState } from 'recoil';
-import { Helmet, HelmetProvider } from 'react-helmet-async';
+import { useState, useEffect } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { useRecoilState, useSetRecoilState } from 'recoil'
+import { Helmet, HelmetProvider } from 'react-helmet-async'
 
-import { loginUser } from '../api/user';
-import { userAtom, isLoggedInAtom } from '../atom';
+import { loginUser } from '../api/user'
+import { userAtom, isLoggedInAtom } from '../atom'
 
 const Login = () => {
   const [account, setAccount] = useState({
     email: '',
-    password: '',
-  });
-  const { email, password } = account;
+    password: ''
+  })
+  const { email, password } = account
   const [error, setError] = useState({
     email: '',
     password: '',
-    emailOrPassword: '',
-  });
-  const [disabled, setDisabled] = useState(false);
-  const setUser = useSetRecoilState(userAtom);
-  const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoggedInAtom);
-  const navigate = useNavigate();
+    emailOrPassword: ''
+  })
+  const [disabled, setDisabled] = useState(false)
+  const setUser = useSetRecoilState(userAtom)
+  const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoggedInAtom)
+  const navigate = useNavigate()
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
+    const { name, value } = event.target
     setAccount({
       ...account,
-      [name]: value,
-    });
-  };
+      [name]: value
+    })
+  }
 
   const onLogin = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setDisabled(true);
+    event.preventDefault()
+    setDisabled(true)
     try {
       const data = await loginUser({
         user: {
           email: email,
-          password: password,
-        },
-      });
-      localStorage.setItem('jwtToken', data.user.token);
-      setIsLoggedIn(true);
-      setUser(data.user);
-      navigate('/', { replace: true });
+          password: password
+        }
+      })
+      localStorage.setItem('jwtToken', data.user.token)
+      setIsLoggedIn(true)
+      setUser(data.user)
+      navigate('/', { replace: true })
     } catch (e: any) {
-      const errorMessage = e.response.data.errors;
+      const errorMessage = e.response.data.errors
       setError({
         email: errorMessage.email,
         password: errorMessage.password,
-        emailOrPassword: errorMessage['email or password'],
-      });
+        emailOrPassword: errorMessage['email or password']
+      })
     }
-    setDisabled(false);
-  };
+    setDisabled(false)
+  }
 
   useEffect(() => {
-    if (isLoggedIn) navigate('/', { replace: true });
-  }, [isLoggedIn, navigate]);
+    if (isLoggedIn) navigate('/', { replace: true })
+  }, [isLoggedIn, navigate])
 
   return (
     <>
@@ -79,8 +79,8 @@ const Login = () => {
               </p>
 
               <ul className="error-messages">
-                {error.email && <li>email can't be blank</li>}
-                {error.password && <li>password can'be blank</li>}
+                {error.email && <li>email can&apos;t be blank</li>}
+                {error.password && <li>password can&apos;be blank</li>}
                 {error.emailOrPassword && <li>email or password is invalid</li>}
               </ul>
 
@@ -120,7 +120,7 @@ const Login = () => {
         </div>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default Login;
+export default Login

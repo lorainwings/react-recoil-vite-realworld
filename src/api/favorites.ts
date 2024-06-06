@@ -1,7 +1,7 @@
-import { POST, DELETE } from './config';
+import { POST, DELETE } from './config'
 
 export const postFavorites = (slug: string) =>
-  POST(`/articles/${slug}/favorite`);
+  POST(`/articles/${slug}/favorite`)
 
 export const deleteFavorites = (slug: string) =>
-  DELETE(`/articles/${slug}/favorite`);
+  DELETE(`/articles/${slug}/favorite`)

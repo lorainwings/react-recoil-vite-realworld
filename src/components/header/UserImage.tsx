@@ -1,10 +1,10 @@
-import { NavLink } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
+import { NavLink } from 'react-router-dom'
+import { useRecoilValue } from 'recoil'
 
-import { userAtom } from '../../atom';
+import { userAtom } from '../../atom'
 
 const UserImage = () => {
-  const user = useRecoilValue(userAtom);
+  const user = useRecoilValue(userAtom)
 
   return (
     <>
@@ -18,7 +18,7 @@ const UserImage = () => {
         </NavLink>
       </li>
     </>
-  );
-};
+  )
+}
 
-export default UserImage;
+export default UserImage
