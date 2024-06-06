@@ -1,6 +1,6 @@
 # ![RealWorld Example App](logo.png)
 
-> ### React + Recoil codebase containing real world examples (CRUD, auth, advanced patterns, etc) that adheres to the [RealWorld](https://github.com/gothinkster/realworld) spec and API.
+> ### React + Recoil codebase containing real world examples (CRUD, auth, advanced patterns, etc) that adheres to the [RealWorld](https://github.com/gothinkster/realworld) spec and API
 
 ### [Demo](https://react-recoil-realworld.vercel.app)&nbsp;&nbsp;&nbsp;&nbsp;[RealWorld](https://github.com/gothinkster/realworld)
 
@@ -39,12 +39,3 @@ For more information on how to this works with other frontends/backends, head ov
 - Profile page (URL: /#/profile/:username, /#/profile/:username/favorites )
   - Show basic user info
   - List of articles populated from author's created articles or author's favorited articles
-
-# Getting started
-
-- Move to the folder where you want to clone this repo and run these commands in order.
-  - `git clone https://github.com/sukam09/react-recoil-realworld-example-app.git`
-  - `yarn` or `npm install`
-  - `yarn start` or `npm start`
-
-[![Brought to you by Thinkster](end.png)](https://thinkster.io)
